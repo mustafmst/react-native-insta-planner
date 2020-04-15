@@ -64,6 +64,7 @@ const styles = StyleSheet.create({
   appTitle: {
     fontSize: 22,
     fontWeight: "bold",
+    marginBottom: 20,
   },
   thumbnail: {
     height: 129,

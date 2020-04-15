@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import Menu from "./components/Menu";
 import Feed from "./components/Feed";
 import { uuidv4 } from "./utils/uuid";
+import InstagramModal from "./components/InstagramAuthModal";
 
 export interface IImageData {
   id: string;
@@ -11,11 +12,17 @@ export interface IImageData {
 
 export interface IAppState {
   images: IImageData[];
+  instagramModalEnabled: boolean;
 }
 
 export default class App extends Component<{}, IAppState> {
   state = {
     images: [],
+    instagramModalEnabled: false,
+  };
+
+  switchInstagramModal = () => {
+    this.setState({ instagramModalEnabled: !this.state.instagramModalEnabled });
   };
 
   addImage = (uri: string) => {
@@ -35,8 +42,15 @@ export default class App extends Component<{}, IAppState> {
   render() {
     return (
       <View style={styles.container}>
+        <InstagramModal
+          enabled={this.state.instagramModalEnabled}
+          switchModal={this.switchInstagramModal}
+        ></InstagramModal>
         <Feed images={this.state.images} removeImage={this.removeImage}></Feed>
-        <Menu addImage={this.addImage}></Menu>
+        <Menu
+          addImage={this.addImage}
+          switchInstagramModal={this.switchInstagramModal}
+        ></Menu>
       </View>
     );
   }

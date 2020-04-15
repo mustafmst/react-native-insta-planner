@@ -4,6 +4,7 @@ import * as ImagePicker from "expo-image-picker";
 
 export interface IMenuProps {
   addImage: Function;
+  switchInstagramModal: Function;
 }
 
 export default function Menu(props: IMenuProps) {
@@ -19,6 +20,13 @@ export default function Menu(props: IMenuProps) {
     <View style={styles.menu}>
       <View style={styles.btn}>
         <Button title="Add Photo" onPress={runImagePickerAsync}></Button>
+      </View>
+      <View style={styles.btn}>
+        <Button
+          color="#c13584"
+          title="Add Instagram"
+          onPress={() => props.switchInstagramModal()}
+        ></Button>
       </View>
     </View>
   );
