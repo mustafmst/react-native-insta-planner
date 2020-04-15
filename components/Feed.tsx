@@ -4,8 +4,8 @@ import {
   View,
   Text,
   Image,
-  ScrollView,
   TouchableHighlight,
+  FlatList,
 } from "react-native";
 import { IImageData } from "../App";
 
@@ -22,24 +22,33 @@ export default function Feed(props: IFeedProps) {
       props.images.length === 0
     )
       return;
-    return [...props.images].reverse().map((image) => (
-      <TouchableHighlight
-        onPress={() => props.removeImage(image.id)}
-        key={image.id}
-      >
-        <Image source={{ uri: image.uri }} style={styles.thumbnail} />
-      </TouchableHighlight>
-    ));
+
+    return (
+      <FlatList
+        style={{ width: "100%" }}
+        data={[...props.images].reverse()}
+        renderItem={({ item }) => (
+          <View style={{ flex: 1, flexDirection: "column", margin: 1 }}>
+            <TouchableHighlight
+              onPress={() => props.removeImage(item.id)}
+              style={{ flex: 1 }}
+            >
+              <Image
+                source={{ uri: item.uri }}
+                style={styles.thumbnail}
+              ></Image>
+            </TouchableHighlight>
+          </View>
+        )}
+        numColumns={3}
+        keyExtractor={(item: IImageData) => item.id}
+      />
+    );
   };
   return (
     <View style={styles.feed}>
       <Text style={styles.appTitle}>InstaPlanner</Text>
-      <ScrollView
-        contentContainerStyle={styles.imageGridContent}
-        style={styles.imageGrid}
-      >
-        {getImagesGrid()}
-      </ScrollView>
+      {getImagesGrid()}
     </View>
   );
 }
@@ -57,14 +66,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   thumbnail: {
-    width: 300,
-    height: 300,
-    resizeMode: "contain",
+    height: 129,
+    width: 129,
+    resizeMode: "cover",
   },
   imageGrid: {
     width: "100%",
   },
   imageGridContent: {
     alignItems: "center",
+  },
+  imageGridRow: {
+    width: "100%",
   },
 });
