@@ -2,9 +2,10 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import Menu from "./components/Menu";
 import Feed from "./components/Feed";
+import { uuidv4 } from "./utils/uuid";
 
 export interface IImageData {
-  id: number;
+  id: string;
   uri: string;
 }
 
@@ -18,19 +19,23 @@ export default class App extends Component<{}, IAppState> {
   };
 
   addImage = (uri: string) => {
-    console.log(uri, this.state);
     this.setState({
-      images: [
-        ...this.state.images,
-        { id: this.state.images.length, uri: uri },
-      ],
+      images: [...this.state.images, { id: uuidv4(), uri: uri }],
+    });
+  };
+
+  removeImage = (id: string) => {
+    this.setState({
+      images: [...this.state.images].filter(
+        (image: IImageData) => image.id !== id
+      ),
     });
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <Feed images={this.state.images}></Feed>
+        <Feed images={this.state.images} removeImage={this.removeImage}></Feed>
         <Menu addImage={this.addImage}></Menu>
       </View>
     );

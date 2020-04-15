@@ -1,9 +1,17 @@
 import React from "react";
-import { StyleSheet, View, Text, Image, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableHighlight,
+} from "react-native";
 import { IImageData } from "../App";
 
 export interface IFeedProps {
   images: IImageData[];
+  removeImage: Function;
 }
 
 export default function Feed(props: IFeedProps) {
@@ -14,12 +22,13 @@ export default function Feed(props: IFeedProps) {
       props.images.length === 0
     )
       return;
-    return props.images.map((image) => (
-      <Image
-        source={{ uri: image.uri }}
-        style={styles.thumbnail}
+    return [...props.images].reverse().map((image) => (
+      <TouchableHighlight
+        onPress={() => props.removeImage(image.id)}
         key={image.id}
-      />
+      >
+        <Image source={{ uri: image.uri }} style={styles.thumbnail} />
+      </TouchableHighlight>
     ));
   };
   return (
